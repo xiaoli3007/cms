@@ -1,0 +1,31 @@
+@charset "utf-8";
+/* CSS Document */
+body {padding: 0;margin: 0;font-size: 75%;background:#3a6ea5;line-height: 140%;font-family:tahoma,arial,宋体,sans-serif;}
+body, html {height: 100%;}
+*:focus {outline: none;}
+
+#content{ width:100%; height:289px; background:url(../images/baidai.gif); text-align:center;overflow:hidden;}
+#login{ width:454px; height:289px; background:url(../images/login.png);_background:url(../images/login.gif);margin:0px auto; }
+#login .top {width:454px;height:77px; line-height:81px; text-align:left; text-indent:60px; font-size:14px; font-weight:bold; color:#367abb;float:left;clear:both;overflow:hidden;}
+#login .con {width:454px;height:184px;float:left;clear:both;overflow:hidden;}
+#login .con .ctab {line-height:40px;margin-top:10px;}
+#login .con .bdwk {width:153px;height:33px; margin-right:4px;float:left;clear:both;background-image:url(../images/bk.gif);overflow:hidden;}
+#login .con .bdwk .tu1 {width:16px;height:33px;float:left;margin-left:5px;display:inline;background-image:url(../images/t.gif);background-repeat:no-repeat;overflow:hidden;}
+#login .con .bdwk .tu2 {width:16px;height:33px;float:left;margin-left:5px;display:inline;background-image:url(../images/t.gif);background-repeat:no-repeat;background-position:0px -33px;overflow:hidden;}
+#login .con .bdwk .tu3 {width:16px;height:33px;float:left;margin-left:5px;display:inline;background-image:url(../images/t.gif);background-repeat:no-repeat;background-position:0px -66px;overflow:hidden;}
+#login .con .bdwk .biao {width:130px;height:33px;float:left;overflow:hidden;}
+#login .con .bdwk .biao .inputtext {width:120px;height:16px;font-family:Arial, Helvetica, sans-serif;color:#005bac;font-size:13px;padding:9px 4px 8px 5px;border:0px;background:none;outline:none;}
+#login .con .dlbtn {background:url(../images/btn_1.gif) no-repeat;height:26px;width:60px;border:0;vertical-align:middle;cursor:pointer;}
+#login .con .tcbtn {background:url(../images/btn_1.gif) no-repeat 0 -26px;height:26px;width:60px;border:0;vertical-align:middle;cursor:pointer;}
+#login .con span {color:#005bac;font-size:12px;}
+
+/*提示*/
+#message{ width:380px; height:230px; text-align:left; background:url(../images/message.png); _background:url(../images/message.gif); }
+#message .title{ width:380px; height:64px; float:left; clear:both; line-height:64px; font-size:14px; font-weight:bold; color:#367abb; text-indent:50px;}
+#message .content{ width:330px;height:130px; padding:20px 25px 10px 25px; line-height:24px; font-size:12px; color:#333333; float:left; clear:both;}
+#message .content table td{ padding:8px 0px;}
+#message strong{font-family:tahoma,arial,宋体,sans-serif; font-size:14px; color:#f60;}
+#message a:link{color:#004499;text-decoration:none;}
+#message a:visited{color:#004499;text-decoration:none;}
+#message a:hover{color:#004499; text-decoration:underline;}
+#message a:active{color:#004499;text-decoration:none;}
