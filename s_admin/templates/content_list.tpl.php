@@ -34,6 +34,7 @@ include $admin->admin_tpl('header');?>
 <input type="submit" value="搜索">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 
+<input type="text" class="Wdate" id="d414" onfocus="WdatePicker({startDate:'00:00:00',dateFmt:'[0-9][0-9]$:mm:ss',qsEnabled:false})"/>
 
 </form>
 </div>

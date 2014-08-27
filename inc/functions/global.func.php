@@ -1051,13 +1051,7 @@ function url_par($par, $url = '') {
 	return $url;
 }
 
-/**
- * 判断email格式是否正确
- * @param $email
- */
-function is_email($email) {
-	return strlen($email) > 6 && preg_match("/^[\w\-\.]+@[\w\-\.]+(\.\w+)+$/", $email);
-}
+
 
 /**
  * iconv 编辑转换
@@ -1083,107 +1077,10 @@ if (!function_exists('iconv')) {
 	}
 }
 
-/**
- * 代码广告展示函数
- * @param intval $siteid 所属站点
- * @param intval $id 广告ID
- * @return 返回广告代码
- */
-function show_ad($siteid, $id) {
-	$siteid = intval($siteid);
-	$id = intval($id);
-	if(!$id || !$siteid) return false;
-	$p = inc_base::load_model('poster_model');
-	$r = $p->get_one(array('spaceid'=>$id, 'siteid'=>$siteid), 'disabled, setting', '`id` ASC');
-	if ($r['disabled']) return '';
-	if ($r['setting']) {
-		$c = string2array($r['setting']);
-	} else {
-		$r['code'] = '';
-	}
-	return $c['code'];
-}
 
 
 
 
-
-
-
-/**
- * 调用关联菜单
- * @param $linkageid 联动菜单id
- * @param $id 生成联动菜单的样式id
- * @param $defaultvalue 默认值
- */
-function menu_linkage($linkageid = 0, $id = 'linkid', $defaultvalue = 0) {
-	$linkageid = intval($linkageid);
-	$datas = array();
-	$datas = getcache($linkageid,'linkage');
-	$infos = $datas['data'];
-	
-	if($datas['style']=='1') {
-		$title = $datas['title'];	
-		$container = 'content'.random(3).date('is');
-		if(!defined('DIALOG_INIT_1')) {
-			define('DIALOG_INIT_1', 1);
-			$string .= '<script type="text/javascript" src="'.JS_PATH.'dialog.js"></script>';
-			//TODO $string .= '<link href="'.CSS_PATH.'dialog.css" rel="stylesheet" type="text/css">';
-		}
-		if(!defined('LINKAGE_INIT_1')) {
-			define('LINKAGE_INIT_1', 1);
-			$string .= '<script type="text/javascript" src="'.JS_PATH.'linkage/js/pop.js"></script>';
-		}
-		$var_div = $defaultvalue && (ROUTE_A=='edit' || ROUTE_A=='account_manage_info'  || ROUTE_A=='info_publish' || ROUTE_A=='orderinfo') ? menu_linkage_level($defaultvalue,$linkageid,$infos) : $datas['title'];
-		$var_input = $defaultvalue && (ROUTE_A=='edit' || ROUTE_A=='account_manage_info'  || ROUTE_A=='info_publish') ? '<input type="hidden" name="info['.$id.']" value="'.$defaultvalue.'">' : '<input type="hidden" name="info['.$id.']" value="">';
-		$string .= '<div name="'.$id.'" value="" id="'.$id.'" class="ib">'.$var_div.'</div>'.$var_input.' <input type="button" name="btn_'.$id.'" class="button" value="'.L('linkage_select').'" onclick="open_linkage(\''.$id.'\',\''.$title.'\','.$container.',\''.$linkageid.'\')">';				
-		$string .= '<script type="text/javascript">';
-		$string .= 'var returnid_'.$id.'= \''.$id.'\';';
-		$string .= 'var returnkeyid_'.$id.' = \''.$linkageid.'\';';
-		$string .=  'var '.$container.' = new Array(';
-		foreach($infos AS $k=>$v) {
-			if($v['parentid'] == 0) {
-				$s[]='new Array(\''.$v['linkageid'].'\',\''.$v['name'].'\',\''.$v['parentid'].'\')';
-			} else {
-				continue;
-			}
-		}
-		$s = implode(',',$s);
-		$string .=$s;
-		$string .= ')';
-		$string .= '</script>';
-	} else {
-		$title = $defaultvalue ? $infos[$defaultvalue]['name'] : $datas['title'];	
-		$colObj = random(3).date('is');
-		$string = '';
-		if(!defined('LINKAGE_INIT')) {
-			define('LINKAGE_INIT', 1);
-			$string .= '<script type="text/javascript" src="'.JS_PATH.'linkage/js/mln.colselect.js"></script>';
-			if(defined('IN_ADMIN')) {
-				$string .= '<link href="'.JS_PATH.'linkage/style/admin.css" rel="stylesheet" type="text/css">';
-			} else {
-				$string .= '<link href="'.JS_PATH.'linkage/style/css.css" rel="stylesheet" type="text/css">';
-			}
-		}
-		$string .= '<input type="hidden" name="info['.$id.']" value="1"><div id="'.$id.'"></div>';
-		$string .= '<script type="text/javascript">';
-		$string .= 'var colObj'.$colObj.' = {"Items":[';
-		
-		foreach($infos AS $k=>$v) {
-			$s .= '{"name":"'.$v['name'].'","topid":"'.$v['parentid'].'","colid":"'.$k.'","value":"'.$k.'","fun":function(){}},';
-		}
-	
-		$string .= substr($s, 0, -1);
-		$string .= ']};';
-		$string .= '$("#'.$id.'").mlnColsel(colObj'.$colObj.',{';
-		$string .= 'title:"'.$title.'",';
-		$string .= 'value:"'.$defaultvalue.'",';
-		$string .= 'width:100';
-		$string .= '});';
-		$string .= '</script>';
-	}
-	return $string;
-}
 
 /**
  * 联动菜单层级
@@ -1369,21 +1266,7 @@ function is_badword($string) {
 	return FALSE;
 }
 
-/**
- * 检查用户名是否符合规定
- *
- * @param STRING $username 要检查的用户名
- * @return 	TRUE or FALSE
- */
-function is_username($username) {
-	$strlen = strlen($username);
-	if(is_badword($username) || !preg_match("/^[a-zA-Z0-9_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/", $username)){
-		return false;
-	} elseif ( 20 <= $strlen || $strlen < 2 ) {
-		return false;
-	}
-	return true;
-}
+
 
 /**
  * 检查id是否存在于数组中
@@ -1469,92 +1352,8 @@ function watermark($source, $target = '',$siteid) {
 	return $target;
 }
 
-/**
- * 当前路径 
- * 返回指定栏目路径层级
- * @param $catid 栏目id
- * @param $symbol 栏目间隔符
- */
-function catpos($catid, $symbol=' > '){
-	$category_arr = array();
-	$siteids = getcache('category_content','commons');
-	$siteid = $siteids[$catid];
-	$category_arr = getcache('category_content_'.$siteid,'commons');
-	if(!isset($category_arr[$catid])) return '';
-	$pos = '';
-	$siteurl = siteurl($category_arr[$catid]['siteid']);
-	$arrparentid = array_filter(explode(',', $category_arr[$catid]['arrparentid'].','.$catid));
-	foreach($arrparentid as $catid) {
-		$url = $category_arr[$catid]['url'];
-		if(strpos($url, '://') === false) $url = $siteurl.$url;
-		$pos .= '<a href="'.$url.'">'.$category_arr[$catid]['catname'].'</a>'.$symbol;
-	}
-	return $pos;
-}
 
-/**
- * 根据catid获取子栏目数据的sql语句
- * @param string $module 缓存文件名
- * @param intval $catid 栏目ID
- */
 
-function get_sql_catid($file = 'category_content_1', $catid = 0, $module = 'commons') {
-	$category = getcache($file,$module);
-	$catid = intval($catid);
-	if(!isset($category[$catid])) return false;
-	return $category[$catid]['child'] ? " `catid` IN(".$category[$catid]['arrchildid'].") " : " `catid`=$catid ";
-}
-
-/**
- * 获取子栏目
- * @param $parentid 父级id 
- * @param $type 栏目类型
- * @param $self 是否包含本身 0为不包含
- * @param $siteid 站点id
- */
-function subcat($parentid = NULL, $type = NULL,$self = '0', $siteid = '') {
-	if (empty($siteid)) $siteid = get_siteid();
-	$category = getcache('category_content_'.$siteid,'commons');
-	foreach($category as $id=>$cat) {
-		if($cat['siteid'] == $siteid && ($parentid === NULL || $cat['parentid'] == $parentid) && ($type === NULL || $cat['type'] == $type)) $subcat[$id] = $cat;
-		if($self == 1 && $cat['catid'] == $parentid && !$cat['child'])  $subcat[$id] = $cat;
-	}
-	return $subcat;
-}
-
-/**
- * 获取内容地址
- * @param $catid   栏目ID
- * @param $id      文章ID
- * @param $allurl  是否以绝对路径返回
- */
-function go($catid,$id, $allurl = 0) {
-	static $category;
-	if(empty($category)) {
-		$siteids = getcache('category_content','commons');
-		$siteid = $siteids[$catid];
-		$category = getcache('category_content_'.$siteid,'commons');
-	}
-	$id = intval($id);
-	if(!$id || !isset($category[$catid])) return '';
-	$modelid = $category[$catid]['modelid'];
-	if(!$modelid) return '';
-	$db = inc_base::load_model('content_model');
-	$db->set_model($modelid);
-	$r = $db->get_one(array('id'=>$id), '`url`');
-	if (!empty($allurl)) {
-		if (strpos($r['url'], '://')===false) {
-			if (strpos($category[$catid]['url'], '://') === FALSE) {
-				$site = siteinfo($category[$catid]['siteid']);
-				$r['url'] = substr($site['domain'], 0, -1).$r['url'];
-			} else {
-				$r['url'] = $category[$catid]['url'].$r['url'];
-			}
-		}
-	}
-	
-	return $r['url'];
-}
 
 /**
  * 将附件地址转换为绝对地址
@@ -1627,19 +1426,7 @@ function siteinfo($siteid) {
 	return isset($sitelist[$siteid]) ? $sitelist[$siteid] : '';
 }
 
-/**
- * 生成CNZZ统计代码
- */
 
-function tjcode() {
-	if(!module_exists('cnzz')) return false;
-	$config = getcache('cnzz', 'commons');
-	if (empty($config)) {
-		return false;
-	} else {
-		return '<script src=\'http://pw.cnzz.com/c.php?id='.$config['siteid'].'&l=2\' language=\'JavaScript\' charset=\'gb2312\'></script>';
-	}
-}
 
 /**
  * 生成标题样式
@@ -1814,14 +1601,7 @@ function imgurl($url) {
 	return $imgfile;
 }
 
-/**
- * 影集图片全路径
- */
-function imgurl_photo($url) {
-	$upload_root = inc_base::load_config('system','upload_url');
-	$imgfile = $upload_root.'photo/'.$url;
-	return $imgfile;
-}
+
 
 
 /*写文件*/

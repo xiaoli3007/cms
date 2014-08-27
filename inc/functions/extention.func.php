@@ -65,6 +65,38 @@ function admin_template($file) {
 }
 
 
+// 计算中文字符串长度
+function utf8_strlen_c($string = null) {
+	// 将字符串分解为单元
+	preg_match_all("/./us", $string, $match);
+	// 返回单元个数
+	return count($match[0]);
+}
 
+
+
+function utf8_strlen($str) {
+	$count = 0;
+	for($i = 0; $i < strlen($str); $i++){
+	$value = ord($str[$i]);
+	if($value > 127) {
+	$count++;
+	if($value >= 192 && $value <= 223) $i++;
+	elseif($value >= 224 && $value <= 239) $i = $i + 2;
+	elseif($value >= 240 && $value <= 247) $i = $i + 3;
+	else die('Not a UTF-8 compatible string');
+	}
+	$count++;
+	}
+	return $count;
+}
+
+function xml_sms($status){
+	
+	$xml =inc_base::load_sys_class('xml','',1);
+	$state=$xml->xml_unserialize($status);
+	
+	return 	trim($state['string']);
+}
 
 ?>
